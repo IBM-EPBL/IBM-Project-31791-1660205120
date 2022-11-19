@@ -1,62 +1,67 @@
-<!DOCTYPE html> 
-<html> 
- 
-<head> 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">  <meta charset="utf-8"> 
- 	<meta name="viewport" content="width=device-width"> 
- 	<title>Garbage Management System</title> 
- 	<link rel="icon" type="image/x-icon" href="/Images/DUMPSTER.png"> 
- 	<link href="style.css" rel="stylesheet" type="text/css" /> 
- 	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> 
- 	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script> 
- 
- 	<script> 
- 	 	var firebaseConfig = 
- 	 	{ 
- 	 	 	apiKey: "AIzaSyB9ysbnaWc3IyeCioh-aJQT_UCMd5CBFeU",  	 	 	authDomain: "fir-test-923b4.firebaseapp.com", 
- 	 	 	databaseURL: "https://fir-test-923b4-default-rtdb.firebaseio.com",  	 	 	projectId: "fir-test-923b4",  	 	 	storageBucket: "fir-test-923b4.appspot.com",  	 	 	messagingSenderId: "943542145393", 
- 	 	 	appId: "1:943542145393:web:9b5ec7593e6a3cbd7966d0", 
- 	 	 	measurementId: "G-BN7JNX1Q7B" 
- 	 	}; 
- 	 	firebase.initializeApp(firebaseConfig) 
- 	</script> 
- 	<script defer src="database.js"></script> 
-</head> 
- 
-<body style="background-color:#1F1B24;"> 
- 	<script src="map.js"></script> 
- 
- 	 
- 	 	<div id="map_container"> 
- 	 	 	<h1 id="live_location_heading" >LIVE LOCATION</h1> 
- 	 	 	<div id="map"></div> 
- 	 	 	<div id="alert_msg">ALERT MESSAGE!</div> 
-    </div> 
- 	</div> 
-<center><a href="https://goo.gl/maps/G9XET5mzSw1ynHQ18"    type="button" class="btn btn-dark">DUMPSTER</a></center> 
-     
- 	<script 
- 	 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBLyWj3FWtCbCXGW3ysEiI2fDfrv2v0Q&callback=myMap"></script></div> </body> 
- 
-</html> 
- 	Database.js 
-              
-const cap_status = document.getElementById('cap_status'); const alert_msg = document.getElementById('alert_msg'); 
- 
-var ref = firebase.database().ref(); 
- 
- 
- 
-ref.on("value", function(snapshot)  
- { 
-    snapshot.forEach(function (childSnapshot) {         var value = childSnapshot.val(); 
- 	 
- 	 	const alert_msg_val = value.alert; 
- 	 	const cap_status_val = value.distance_status; 
- 	 	 
- 
- 	 	alert_msg.innerHTML= `${alert_msg_val}`; 
-    }); 
- }, function (error) { 
-    console.log("Error: " + error.code); 
- }); 
+<!DOCTYPE html> <!--
+   Copyright 2016,2019 JS Foundation and other contributors, https://js.foundation/
+   Copyright 2016 IBM Corp.
+   Copyright 2015 Andrei Tatar
+   
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+   
+   https://www.apache.org/licenses/LICENSE-2.0
+   
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   --> <!--  <html> --> 
+<html>
+   <!-- manifest="dashboard.appcache"> --> 
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+      <meta name="apple-mobile-web-app-title" content="Node-RED">
+      <meta name="mobile-web-app-capable" content="yes">
+      <meta name="theme-color" content="#097479">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+      <link rel="icon" sizes="192x192" href="icon192x192.png">
+      <link rel="shortcut icon" type="image/png" href="icon64x64.png">
+      <link rel="apple-touch-icon" href="icon120x120.png">
+      <link rel="stylesheet" href="css/app.min.css">
+      <link rel="stylesheet/less" href="css/app.min.less">
+      <title></title>
+   </head>
+   <body id="nr-dashboard" ng-app="ui" ng-controller="MainController as main" ng-cloak layout="column" style="background: {{main.backgroundColor}}" class="nr-dashboard-theme" ng-swipe-right="onSwipeRight();" ng-swipe-left="onSwipeLeft();" ng-attr-ng-swipe-disable-mouse="{{main.allowSwipe !== 'mouse' ? '' : undefined}}">
+      <md-content ng-if="main.loaded" ng-include="'partials/main.html'" layout="column" flex></md-content>
+      <div ng-if="!main.loaded && !main.nothing" ng-include="'loading.html'" class="node-red-ui--loading"></div>
+      <div ng-if="main.nothing" class="node-red-ui--notabs">
+         <table>
+            <tr>
+               <td>
+                  <center><img src="icon120x120.png"></center>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <center>
+                     <h2>Welcome to the Node-RED Dashboard</h2>
+                  </center>
+               </td>
+            </tr>
+            <tr>
+               <td>
+                  <center>GAUGE</center>
+               </td>
+             
+               <td>
+                  <center>GAUGE</center>
+               </td>
+            </tr>
+         </table>
+      </div>
+      <script src="socket.io/socket.io.js"></script> <script src="js/app.min.js"></script> <script src="i18n.js"></script> 
+   </body>
+</html>
